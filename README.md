@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NextJS Template with Prisma and NextAuth
+
+This template provides a starting point for building NextJS applications with Prisma as the ORM and NextAuth for authentication. It includes boilerplate code to get you started quickly.
+
+## Features
+
+* NextJS for server-side rendering and static site generation
+* Prisma for database operations and schema management
+* NextAuth for authentication and session management
+* Support for multiple authentication providers (Email, GitHub, Google)
+* Email verification and magic link sign-in
+* Customizable email templates for verification and magic link
+* Prisma schema and migrations setup
+* NextAuth configuration for providers and session management
 
 ## Getting Started
 
-First, run the development server:
+Choose one of these methods to create your project:
 
+### Using create-next-app (Recommended)
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx create-next-app@latest my-app --example https://github.com/amoffatt/nextjs-prisma-nextauth-template
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Manual Clone
+```bash
+git clone https://github.com/your-username/nextjs-prisma-nextauth-template.git
+cd nextjs-prisma-nextauth-template
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+After using either method:
+1. Copy the `.env` file to `.env.local` to set up your environment variables. This file will be ignored by Git due to the `.gitignore` file.
+2. Start the development server: `npm run dev`
+3. Open your browser at `http://localhost:3000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configuration
 
-## Learn More
+### Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+* `NEXTAUTH_SECRET`: Secret key for NextAuth
+* `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM`: SMTP server settings for email verification (optional)
+* `GITHUB_ID` and `GITHUB_SECRET`: GitHub OAuth credentials (optional)
+* `GOOGLE_ID` and `GOOGLE_SECRET`: Google OAuth credentials (optional)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prisma Schema
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The Prisma schema is defined in `prisma/schema.prisma`. You can modify it to fit your database schema needs. After making changes to your Prisma models, you need to generate and apply the corresponding database migrations. To do this, run `npx prisma generate` to generate the Prisma client and `npx prisma migrate dev` to apply the migrations.
 
-## Deploy on Vercel
+### NextAuth Configuration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The NextAuth configuration is in `app/api/auth/config.ts`. You can modify it to add or remove authentication providers, change session settings, and more.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+Contributions are welcome! If you have any suggestions or improvements, feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
