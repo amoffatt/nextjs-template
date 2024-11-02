@@ -1,4 +1,4 @@
-# NextJS Template with Prisma and NextAuth
+# NextJS 14 Template with Prisma 5 and NextAuth 4 support
 
 This template provides a starting point for building NextJS applications with Prisma as the ORM and NextAuth for authentication. It includes boilerplate code to get you started quickly.
 
