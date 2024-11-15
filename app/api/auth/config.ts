@@ -1,30 +1,38 @@
 import { prisma } from "@/lib/prisma"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import EmailProvider from "next-auth/providers/email";
+import EmailProvider, { EmailConfig } from "next-auth/providers/email";
 import { AuthOptions } from "next-auth"
 import { Adapter } from "next-auth/adapters"
 import { sendVerificationRequest } from "./email"
-import GithubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
+import GithubProvider, { GithubProfile } from "next-auth/providers/github";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
+import { OAuthConfig } from "next-auth/providers/oauth";
 
-let providers = []
 
-if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
-  providers.push(GithubProvider({
-    clientId: process.env.GITHUB_ID,
-    clientSecret: process.env.GITHUB_SECRET,
-  }))
+interface AuthProviders {
+  github?: OAuthConfig<GithubProfile>
+  google?: OAuthConfig<GoogleProfile>
+  email?: EmailConfig
 }
 
-if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
-  providers.push(GoogleProvider({
-    clientId: process.env.GOOGLE_ID,
-    clientSecret: process.env.GOOGLE_SECRET,
-  }))
+export const providers: AuthProviders = {}
+
+if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
+  providers.github = GithubProvider({
+    clientId: process.env.GITHUB_ID,
+    clientSecret: process.env.GITHUB_SECRET,
+  })
+}
+
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.google = GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  })
 }
 
 if (process.env.SMTP_HOST && process.env.SMTP_PORT && process.env.SMTP_USER && process.env.SMTP_PASS && process.env.EMAIL_FROM) {
-  providers.push(EmailProvider({
+  providers.email = EmailProvider({
     server: {
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
@@ -35,13 +43,13 @@ if (process.env.SMTP_HOST && process.env.SMTP_PORT && process.env.SMTP_USER && p
     },
     from: process.env.EMAIL_FROM,
     sendVerificationRequest
-  }))
+  })
 }
 
 
-export const authOptions:AuthOptions = {
+export const authOptions: AuthOptions = {
   // debug: true,
-  providers: providers,
+  providers: Object.values(providers),
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma) as Adapter,
   // pages: {
