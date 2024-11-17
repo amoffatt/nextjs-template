@@ -1,8 +1,8 @@
 "use server"
 import { User, Prisma, PrismaClient } from "@prisma/client";
-// import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db/prisma";
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
 export async function fetchUser(userId: string) {
     return prisma.user.findUnique({
